@@ -24,18 +24,28 @@ import {
   resampleByLength,
   smoothstep01,
   clamp01,
+  composeTightened,
 } from "./GhostHandsKnotData";
+
+/** Where along the rope (arc progress from the standing end) the left hand grips during Tighten. */
+const TIGHTEN_LEFT_GRIP_T = 0.1;
 import { GhostHandRig } from "./GhostHandsRigPose";
 
 const DEG = Math.PI / 180;
 const PINCH_CURL = 0.85;
 /** Rigged-hand posing (rope-local cm / degrees). Fingers away from the user, palm down. */
-const RIGHT_YAW_DEG = -15;
-const LEFT_YAW_DEG = 18;
-const HAND_PITCH_DEG = 12;
-const HAND_ROLL_DEG = 35;
+const RIGHT_YAW_DEG = 0;
+const LEFT_YAW_DEG = 8;
+const HAND_PITCH_DEG = 8;
+/** Thumb-side lift so the thumb/index pinch stays visible while the palm still faces down. */
+const HAND_ROLL_DEG = 25;
+/** Table top in rope-local cm, and how far curled fingertip joints stay above it (finger radius). */
+export const TABLE_TOP_LOCAL_Y = -0.5;
+export const FINGER_CLEARANCE_CM = 0.6;
 /** Left hand pinches the standing part just left of the loop's crossing (holds the hole). */
-export const LEFT_HOLD_LOCAL = new vec3(-3.2, 0.5, 3.1);
+export const LEFT_HOLD_LOCAL = new vec3(-3.2, 0.1, 3.1);
+/** GHOST_KEYS lift at or below which the right pinch sits on the rope (drag 0.5 / hold 0.8). */
+const PINCH_ON_ROPE_LIFT_CM = 0.8;
 const VERT_LAYOUT = [
   { name: "position", components: 3 },
   { name: "normal", components: 3, normalized: true },
@@ -312,8 +322,9 @@ export class GhostHandsGhostController extends BaseScriptComponent {
     const k = sampleGhostKey(u);
     const tip = pointAtProgress(path, k.pathT);
     if (this.rigMode) {
-      // Pinch point sits on the rope tip (rope is 1 cm thick: centre ~0.5 cm up).
-      this.placeRig(this.rightRig, new vec3(tip.x, tip.y + k.liftCm * 0.8 + 0.3, tip.z), RIGHT_YAW_DEG, k.curl);
+      // Thumb and index close ON the ghost rope tip (path points are the rope centre line); the
+      // hand only lifts above it while approaching (liftCm > the drag/hold value).
+      this.placeRig(this.rightRig, new vec3(tip.x, tip.y + Math.max(0, k.liftCm - PINCH_ON_ROPE_LIFT_CM), tip.z), RIGHT_YAW_DEG, k.curl);
       this.setLeft(this.step >= 2, LEFT_HOLD_LOCAL, 1);
     } else {
       this.placeHand(new vec3(tip.x, tip.y + k.liftCm + 0.6, tip.z), k.curl);
@@ -326,9 +337,9 @@ export class GhostHandsGhostController extends BaseScriptComponent {
     if (this.rigMode) {
       // Right hand holds the fixed loop + tail together; left hand pulls the standing part left.
       this.placeRig(this.rightRig, new vec3(2.2, 0.5, 4.2), RIGHT_YAW_DEG, 1);
-      const a = new vec3(-7, 0.5, -1.4);
-      const b = new vec3(-15, 0.5, -1.5);
-      this.setLeft(true, vec3.lerp(a, b, s), 1);
+      // Left hand rides the standing part as it is drawn tight (same curve the rope shows).
+      const sp = pointAtProgress(composeTightened(k), TIGHTEN_LEFT_GRIP_T);
+      this.setLeft(true, new vec3(sp.x, sp.y + 0.5, sp.z), 1);
       return;
     }
     const a = KNOT_CENTER.add(new vec3(-4, 0.8, 2.5));
@@ -339,7 +350,8 @@ export class GhostHandsGhostController extends BaseScriptComponent {
   private placeRig(rig: GhostHandRig, local: vec3, yawDeg: number, curl: number): void {
     if (!rig) return;
     const rope = this.ropeTransform();
-    rig.place({ target: rope.getWorldTransform().multiplyPoint(local), yawDeg: yawDeg, pitchDeg: HAND_PITCH_DEG, curl: curl, rollDeg: HAND_ROLL_DEG });
+    const floorY = rope.getWorldTransform().multiplyPoint(new vec3(0, TABLE_TOP_LOCAL_Y + FINGER_CLEARANCE_CM, 0)).y;
+    rig.place({ target: rope.getWorldTransform().multiplyPoint(local), yawDeg: yawDeg, pitchDeg: HAND_PITCH_DEG, curl: curl, rollDeg: HAND_ROLL_DEG, floorY: floorY });
   }
 
   private setLeft(on: boolean, local: vec3, curl: number): void {
@@ -355,10 +367,16 @@ export class GhostHandsGhostController extends BaseScriptComponent {
     this.rigMode = true;
     this.rightRig = right;
     this.rightHandRig.setParent(this.handRoot);
-    this.rigMat = this.makeMat(this.rigMaterial);
-    const rp = this.rigMat.mainPass as any;
-    rp.twoSided = false;
-    rp.depthWrite = true;
+    if (this.rigMaterial && this.rigMaterial.getPassCount() >= 2) {
+      // Authored 2-pass ghost material: pass 0 = depth only, pass 1 = colour (body + glowing
+      // rim) on the nearest surface only, so the curled fingers don't show through as blobs.
+      this.rigMat = this.rigMaterial.clone();
+    } else {
+      this.rigMat = this.makeMat(this.rigMaterial);
+      const rp = this.rigMat.mainPass as any;
+      rp.twoSided = false;
+      rp.depthWrite = true;
+    }
     right.setMaterial(this.rigMat);
     if (this.leftHandRig) {
       const left = new GhostHandRig(this.leftHandRig, true);
@@ -419,13 +437,16 @@ export class GhostHandsGhostController extends BaseScriptComponent {
   private applyAlpha(): void {
     const c = this.ghostColor;
     this.setColor(this.handMat, new vec4(c.x, c.y, c.z, this.alpha));
-    this.setColor(this.rigMat, new vec4(c.x, c.y, c.z, this.alpha));
+    // The rig shader has its own semi-transparent body + glowing rim, so its alpha is relative to
+    // the round-1 base: 1 = full ghost look, 0.5 = round 2 half-transparent, fading to 0.
+    this.setColor(this.rigMat, new vec4(c.x, c.y, c.z, clamp01(this.alpha / Math.max(0.01, this.baseAlpha))));
     this.setColor(this.rimMat, new vec4(c.x, c.y, c.z, this.alpha * 0.35));
     this.setColor(this.tipMat, new vec4(c.x, c.y, c.z, this.alpha * 0.8));
   }
 
   private setColor(m: Material, col: vec4): void {
-    if (m) (m.mainPass as any).baseColor = col;
+    if (!m) return;
+    for (let i = 0; i < m.getPassCount(); i++) (m.getPass(i) as any).baseColor = col;
   }
 
   private makeMat(src?: Material): Material {

@@ -3,9 +3,9 @@
 // Steps 1-4 use debug hooks (covered for real by GH6); Tighten is a real pinch.
 import {Scenario} from "Leaf.lspkg/Scenarios/scenario/Scenario"
 import {expect} from "Leaf.lspkg/Utils/common/Expect"
-import {sleep} from "Leaf.lspkg/Utils/common/Utils"
-import {FINISHED_KNOT_SHAPE, FIXED_LOOP_RANGE, finishedKnotFacts, insideXZ} from "../Scripts/GhostHandsKnotData"
-import {getMain, log, mustPoll, pinchButton, pinchStartCard} from "./GhostHandsLeafHelpers"
+import {findSceneObjectByName, sleep} from "Leaf.lspkg/Utils/common/Utils"
+import {FINISHED_KNOT_SHAPE, FIXED_LOOP_RANGE, KNOT_CENTER, finishedKnotFacts, insideXZ, nearestOnPolyline} from "../Scripts/GhostHandsKnotData"
+import {fmt, getMain, log, mustPoll, pinchButton, pinchStartCard, ropeWorld} from "./GhostHandsLeafHelpers"
 
 @component
 export class GH8FinishedKnotScenario extends Scenario {
@@ -28,7 +28,25 @@ export class GH8FinishedKnotScenario extends Scenario {
     // Both ghost hands demonstrate the pull: right holds loop + tail, left pulls the standing part.
     await mustPoll(() => main.ghost.isLeftHandShown(), 1000, "left ghost hand shown during Tighten")
     expect(main.ghost.usesRiggedHands()).toBe(true)
+    // ...and the left hand really pulls ON the rope: its pinch stays on the standing part
+    // every frame while the rope is drawn tight.
+    const ropeInv = main.rope.getSceneObject().getTransform().getInvertedWorldTransform()
+    let maxGripGap = 0
+    let gripFrames = 0
+    const grip = this.createEvent("UpdateEvent")
+    grip.bind(() => {
+      if (main.getPhase() !== "tightening" || !main.ghost.isLeftHandShown()) return
+      const cps = main.rope.getControlPoints()
+      if (cps.length < 2) return
+      const local = ropeInv.multiplyPoint(main.ghost.getLeftRig().pinchPoint())
+      maxGripGap = Math.max(maxGripGap, nearestOnPolyline(cps, local, false).distance)
+      gripFrames++
+    })
     await mustPoll(() => main.getPhase() === "finished", 4000, "finished")
+    grip.enabled = false
+    log(`Tighten: left-hand grip sampled ${gripFrames} frames, max gap to rope ${maxGripGap.toFixed(2)} cm`)
+    expect(gripFrames).toBeGreaterThan(10)
+    expect(maxGripGap).toBeLessThan(1.5)
     await sleep(200)
 
     const pts = main.rope.getControlPoints()
@@ -48,7 +66,27 @@ export class GH8FinishedKnotScenario extends Scenario {
     expect(facts.loopDepthCm).toBeGreaterThan(8)
     expect(insideXZ(tail, loop)).toBe(true) // tail end lies inside the fixed loop
     expect(insideXZ(standingStart, loop)).toBe(false) // standing part leads away, outside
+
+    // Bowline geometry: the standing part leaves the collar on the side AWAY from the fixed loop
+    // (roughly in line with it, as a loaded bowline lies), not alongside it.
+    let lx = 0, lz = 0
+    for (const p of loop) { lx += p.x; lz += p.z }
+    lx /= loop.length; lz /= loop.length
+    const toLoop = new vec3(lx - KNOT_CENTER.x, 0, lz - KNOT_CENTER.z).normalize()
+    const toStanding = new vec3(standingStart.x - KNOT_CENTER.x, 0, standingStart.z - KNOT_CENTER.z).normalize()
+    log(`standing part vs loop direction from collar: dot ${toStanding.dot(toLoop).toFixed(2)}`)
+    expect(toStanding.dot(toLoop)).toBeLessThan(-0.4)
+
+    // The check badge must not cover the collar from the user's eyes: where the eye->collar
+    // sight line passes the badge's depth, it must be clearly below the badge.
     expect(main.isFinishedBadgeVisible()).toBe(true)
+    const eye = findSceneObjectByName("Camera Object").getTransform().getWorldPosition()
+    const collar = ropeWorld(KNOT_CENTER)
+    const badge = findSceneObjectByName("FinishedBadgeRoot").getTransform().getWorldPosition()
+    const k = (badge.z - eye.z) / (collar.z - eye.z)
+    const sightY = eye.y + (collar.y - eye.y) * k
+    log(`badge ${fmt(badge)} collar ${fmt(collar)}: sight line at badge depth y ${sightY.toFixed(1)} (badge y ${badge.y.toFixed(1)})`)
+    expect(badge.y - sightY).toBeGreaterThan(4) // > badge half-height + margin: collar stays visible
     expect(main.isRopeVisible()).toBe(true)
   }
 }

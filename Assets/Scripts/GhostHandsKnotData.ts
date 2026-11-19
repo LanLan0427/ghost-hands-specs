@@ -62,8 +62,9 @@ export const KNOT_CENTER: vec3 = v(0.2, 0.6, -1.6);
  * Strands that cross over another strand are lifted to y ~1 (rope is 1 cm thick).
  */
 export const FINISHED_KNOT_SHAPE: vec3[] = [
-  // standing part (from the left); lifted where the tail passes under it
-  v(-22, 0, -1.5), v(-15, 0, -1.5), v(-9, 0, -1.4), v(-5.6, 0.5, -1.35), v(-4.4, 1.1, -1.3),
+  // standing part: leads AWAY from the fixed loop (up-left, roughly in line with the loop as
+  // a loaded bowline lies), lifted where the tail passes under it
+  v(-18, 0, -12), v(-12.5, 0, -8.2), v(-8, 0, -4.6), v(-5.6, 0.4, -2.6), v(-4.3, 1.1, -1.7),
   v(-3.2, 1.0, -1.25),
   // collar: crosses over itself, rings round the hole
   v(-1.0, 1.0, -1.0), v(0.8, 1.0, -0.5), v(2.1, 0.2, -1.2), v(1.9, 0, -2.7), v(0.6, 0, -3.4),

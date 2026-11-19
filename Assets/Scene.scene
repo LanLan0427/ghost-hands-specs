@@ -1705,7 +1705,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: -56.000000, z: -47.000000}
+    Position: {x: 0.000000, y: -61.000000, z: -58.000000}
     Rotation: {x: -50.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3081,7 +3081,7 @@
       ghostHandMesh: !<reference.RenderMesh> b65568f8-3141-4fc6-b034-96009f5bfd8f
       rightHandRig: !<reference.SceneObject> 1fdf6815-3bda-412e-9a95-a65404e859f3
       leftHandRig: !<reference.SceneObject> 2a4eaa93-aa7d-4fd2-bc69-0e2577dacc9d
-      rigMaterial: !<reference.Material> a6dc4ee6-9804-4f84-8eb1-5ab90bfd3b61
+      rigMaterial: !<reference.Material> eab3843f-9ff2-4a5f-96a3-846d3bf74b8b
       useIkHandMesh: true
       ikHandRotationDeg: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
       handLengthCm: !<float> 19.000000

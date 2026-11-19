@@ -13,10 +13,13 @@ const DEG = Math.PI / 180;
 
 /** Flexion (deg about local +X) for joints 0,1,2 of each long finger: [open, pinch]. */
 const FLEX: { [finger: string]: [number[], number[]] } = {
-  index: [[12, 8, 4], [44, 34, 22]],
-  mid: [[14, 10, 6], [30, 30, 20]],
-  ring: [[18, 12, 8], [36, 32, 22]],
-  pinky: [[22, 14, 10], [42, 34, 24]],
+  // Index stays long and reaches forward, only its tip hooks down to the thumb.
+  index: [[12, 8, 4], [18, 30, 30]],
+  // Non-pinching fingers curl progressively (mid least, pinky most) and tuck under the palm,
+  // so they stay above the table and read as relaxed, not as a stiff claw.
+  mid: [[14, 10, 6], [34, 46, 30]],
+  ring: [[18, 12, 8], [42, 50, 32]],
+  pinky: [[22, 14, 10], [50, 54, 34]],
 };
 /** Thumb: thumb-1 slerps rest -> opposed (captured from the IK pinch simulation), thumb-2 flexes. */
 const THUMB1_PINCH_R = new quat(0.75, 0.433, -0.433, 0.25);
@@ -36,7 +39,14 @@ export interface HandPlacement {
   curl: number;
   /** Degrees the thumb side is raised (hand rolled onto its pinky edge), like a real rope pinch. */
   rollDeg?: number;
+  /** World Y the non-pinching fingertips must stay above (table top + finger radius). */
+  floorY?: number;
 }
+
+/** Fingers that curl further, instead of sinking into the table, when they would dip below floorY. */
+const CLEAR_FINGERS = ["mid", "ring", "pinky"];
+const CLEAR_STEP_DEG = 6;
+const CLEAR_MAX_ITERS = 14;
 
 export class GhostHandRig {
   readonly root: SceneObject;
@@ -98,11 +108,15 @@ export class GhostHandRig {
   }
 
 
-  /** Assign the ghost material to every mesh visual in the rig and drop any others. */
+  /** Assign the ghost material to every mesh visual in the rig. The hands draw after the
+   *  scene (high render order) so their depth pre-pass never hides the rope behind them. */
   setMaterial(mat: Material): void {
     const visit = (o: SceneObject) => {
       const visuals = o.getComponents("Component.RenderMeshVisual") as RenderMeshVisual[];
-      for (const v of visuals) v.mainMaterial = mat;
+      for (const v of visuals) {
+        v.mainMaterial = mat;
+        v.setRenderOrder(1000);
+      }
       for (let i = 0; i < o.getChildrenCount(); i++) visit(o.getChild(i));
     };
     visit(this.root);
@@ -132,6 +146,33 @@ export class GhostHandRig {
     this.solvePinch(pl.curl < 0 ? 0 : pl.curl > 1 ? 1 : pl.curl);
     const pinch = this.pinchPoint();
     t.setWorldPosition(pl.target.add(pl.target.sub(pinch)));
+    if (pl.floorY !== undefined) this.clearFloor(pl.floorY);
+  }
+
+  /** Curl each non-pinching finger a little more until its tip is above floorY. */
+  private clearFloor(floorY: number): void {
+    for (const f of CLEAR_FINGERS) {
+      const tip = this.joints[f + "-3_end"];
+      if (!tip) continue;
+      for (let k = 0; k < CLEAR_MAX_ITERS && tip.getTransform().getWorldPosition().y < floorY; k++) {
+        for (let i = 0; i < 3; i++) {
+          const j = this.joints[f + "-" + i];
+          if (!j) continue;
+          const jt = j.getTransform();
+          jt.setLocalRotation(jt.getLocalRotation().multiply(quat.angleAxis(CLEAR_STEP_DEG * DEG, vec3.right())));
+        }
+      }
+    }
+  }
+
+  /** Lowest world Y among the non-pinching fingertips (for tests). */
+  lowestCurledTipY(): number {
+    let y = Number.MAX_VALUE;
+    for (const f of CLEAR_FINGERS) {
+      const tip = this.joints[f + "-3_end"];
+      if (tip) y = Math.min(y, tip.getTransform().getWorldPosition().y);
+    }
+    return y;
   }
 
   /** World midpoint between thumb tip and index tip. */
