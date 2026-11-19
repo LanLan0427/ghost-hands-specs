@@ -130,8 +130,16 @@ export class GhostHandsRopeController extends BaseScriptComponent {
 
   // ------------------------------------------------------------ mesh build
 
+  /** Rope-local control centre-line of the current shape (for tests). */
+  getControlPoints(): vec3[] {
+    return this.lastControl.slice();
+  }
+
+  private lastControl: vec3[] = [];
+
   private rebuild(control: vec3[]): void {
     if (!this.builder || !control || control.length < 2) return;
+    this.lastControl = control.slice();
     const smooth = catmullRom(control, Math.max(1, this.samplesPerSegment));
     let pts = resampleByLength(smooth, Math.max(0.05, this.ringSpacingCm));
     if (pts.length < 2) return;

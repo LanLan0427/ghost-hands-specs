@@ -38,8 +38,11 @@
     ghostTipRoot: false
     handLengthCm: false
     ikHandRotationDeg: false
+    leftHandRig: false
     loopCount: false
     loopSec: false
+    rigMaterial: false
+    rightHandRig: false
     ropeRoot: false
     slowFactor: false
     useIkHandMesh: false
@@ -56,6 +59,9 @@
       ghostTipRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       baseMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
       ghostHandMesh: !<reference.RenderMesh> 00000000-0000-0000-0000-000000000000
+      rightHandRig: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      leftHandRig: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      rigMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
       useIkHandMesh: true
       ikHandRotationDeg: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
       handLengthCm: !<float> 19.000000
@@ -74,6 +80,9 @@
     - // @input SceneObject ghostTipRoot
     - // @input Asset.Material baseMaterial
     - // @input Asset.RenderMesh ghostHandMesh
+    - // @input SceneObject rightHandRig
+    - // @input SceneObject leftHandRig
+    - // @input Asset.Material rigMaterial
     - // @input bool useIkHandMesh = true
     - "// @input vec3 ikHandRotationDeg = {0,0,0}"
     - // @input float handLengthCm = 19

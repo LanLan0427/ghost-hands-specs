@@ -50,10 +50,40 @@ export const STEP_CHECKPOINT_INDICES: number[][] = [
   [0, 2, 4],
 ];
 
-/** Centre of the finished knot (rope-local) and how hard Tighten pulls toward it. */
-export const KNOT_CENTER: vec3 = v(0, 0.4, 0.5);
-export const TIGHTEN_RADIUS_CM = 14;
-export const TIGHTEN_PULL = 0.5;
+/** Centre of the finished knot's collar (rope-local). */
+export const KNOT_CENTER: vec3 = v(0.2, 0.6, -1.6);
+
+/**
+ * The finished, dressed bowline (rope-local, one centre-line from the standing end to the
+ * tail end). Read from above: the standing part comes in from the left and forms a tight
+ * collar ("the hole") at KNOT_CENTER; the fixed loop (~8 cm wide) hangs toward the user;
+ * the tail comes up through the hole, wraps behind and under the standing part ("the
+ * tree"), goes back down the hole and lies INSIDE the fixed loop beside its right leg.
+ * Strands that cross over another strand are lifted to y ~1 (rope is 1 cm thick).
+ */
+export const FINISHED_KNOT_SHAPE: vec3[] = [
+  // standing part (from the left); lifted where the tail passes under it
+  v(-22, 0, -1.5), v(-15, 0, -1.5), v(-9, 0, -1.4), v(-5.6, 0.5, -1.35), v(-4.4, 1.1, -1.3),
+  v(-3.2, 1.0, -1.25),
+  // collar: crosses over itself, rings round the hole
+  v(-1.0, 1.0, -1.0), v(0.8, 1.0, -0.5), v(2.1, 0.2, -1.2), v(1.9, 0, -2.7), v(0.6, 0, -3.4),
+  v(-0.7, 0, -2.9), v(-1.1, 0, -1.7), v(-0.9, 0, -0.8),
+  // fixed loop: left leg toward the user, round the bottom, right leg back up
+  v(-1.5, 0, 0.9), v(-2.9, 0, 3.1), v(-3.8, 0, 5.9), v(-3.6, 0, 8.7), v(-2.0, 0, 10.7),
+  v(0.5, 0, 11.5), v(3.0, 0, 10.7), v(4.4, 0, 8.5), v(4.6, 0, 5.7), v(3.9, 0, 3.1),
+  v(2.7, 0, 1.0), v(1.7, 0, -0.3),
+  // up through the hole (from underneath)
+  v(1.3, 0.3, -1.4), v(1.0, 1.3, -2.2), v(0.4, 1.9, -3.1),
+  // around the tree: behind the standing part, under it, and back over the front
+  v(-2.0, 1.5, -3.5), v(-3.8, 0.6, -2.7), v(-4.5, 0, -1.3), v(-4.2, 0.2, 0.2),
+  v(-2.6, 1.3, 0.3), v(-0.7, 1.7, -1.1),
+  // back down the hole, out under the collar, tail lying inside the fixed loop
+  v(-0.1, 0.8, -1.8), v(0.2, 0, -1.0), v(0.5, 0, -0.1), v(1.0, 0, 1.1), v(1.5, 0, 3.0),
+  v(1.9, 0, 4.9),
+];
+
+/** FINISHED_KNOT_SHAPE index range [first, last] of the fixed loop (left leg .. right leg). */
+export const FIXED_LOOP_RANGE: [number, number] = [14, 25];
 
 // ---------------------------------------------------------------- ghost keyframes
 
@@ -345,18 +375,41 @@ export function composeFullKnot(): vec3[] {
   return composeRope(STEP_PATHS.length, 1, null);
 }
 
-/** Map a rope-local point toward the knot centre by tighten progress k (0..1). */
-export function tightenPoint(p: vec3, k: number): vec3 {
-  const d = p.distance(KNOT_CENTER);
-  if (d >= TIGHTEN_RADIUS_CM) return p;
-  const w = 1 - smoothstep01(d / TIGHTEN_RADIUS_CM);
-  const pull = smoothstep01(k) * TIGHTEN_PULL * w;
-  const q = lerpVec3(p, KNOT_CENTER, pull);
-  // Flatten height toward the table as it tightens (knot settles).
-  return new vec3(q.x, q.y * (1 - 0.5 * smoothstep01(k) * w), q.z);
+const TIGHTEN_SAMPLES = 160;
+
+/** Rope centre-line for the Tighten animation at progress k (0 = loose, 1 = finished):
+ *  the loose tied knot and the dressed bowline, both resampled by arc length from the
+ *  standing end to the tail, blended point-by-point. */
+export function composeTightened(k: number): vec3[] {
+  const e = smoothstep01(k);
+  if (e >= 1) return FINISHED_KNOT_SHAPE.slice();
+  const loose = resampleCount(composeFullKnot(), TIGHTEN_SAMPLES);
+  const done = resampleCount(FINISHED_KNOT_SHAPE, TIGHTEN_SAMPLES);
+  if (e <= 0) return dedupe(composeFullKnot());
+  return dedupe(loose.map((p, i) => lerpVec3(p, done[i], e)));
 }
 
-/** Rope centre-line for the Tighten animation at progress k (0 = loose, 1 = finished). */
-export function composeTightened(k: number): vec3[] {
-  return dedupe(composeFullKnot().map((p) => tightenPoint(p, k)));
+/** Even-odd point-in-polygon test on the XZ plane (rope-local). */
+export function insideXZ(p: vec3, poly: vec3[]): boolean {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const a = poly[i];
+    const b = poly[j];
+    if ((a.z > p.z) !== (b.z > p.z) && p.x < ((b.x - a.x) * (p.z - a.z)) / (b.z - a.z) + a.x) inside = !inside;
+  }
+  return inside;
+}
+
+/** Shape facts of the finished bowline, for tests: fixed-loop width/depth and whether the
+ *  tail end lies inside the fixed loop (loop closed across its throat). */
+export function finishedKnotFacts(): { loopWidthCm: number; loopDepthCm: number; tailInsideLoop: boolean } {
+  const [a, b] = FIXED_LOOP_RANGE;
+  const loop = FINISHED_KNOT_SHAPE.slice(a, b + 1);
+  let minX = 1e9, maxX = -1e9, minZ = 1e9, maxZ = -1e9;
+  for (const p of loop) {
+    minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+    minZ = Math.min(minZ, p.z); maxZ = Math.max(maxZ, p.z);
+  }
+  const tail = FINISHED_KNOT_SHAPE[FINISHED_KNOT_SHAPE.length - 1];
+  return { loopWidthCm: maxX - minX, loopDepthCm: maxZ - minZ, tailInsideLoop: insideXZ(tail, loop) };
 }

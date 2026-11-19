@@ -5,7 +5,7 @@
 import {Scenario} from "Leaf.lspkg/Scenarios/scenario/Scenario"
 import {expect} from "Leaf.lspkg/Utils/common/Expect"
 import {findSceneObjectByName, sleep} from "Leaf.lspkg/Utils/common/Utils"
-import {getMain, log, mustPoll, pinchStartCard} from "./GhostHandsLeafHelpers"
+import {getMain, log, mustPoll, pinchStartCard, ghostHandPoint} from "./GhostHandsLeafHelpers"
 
 @component
 export class GH2DemoHoldScenario extends Scenario {
@@ -18,7 +18,6 @@ export class GH2DemoHoldScenario extends Scenario {
     const t0 = getTime()
 
     // Watch the ghost hand position over time: it should move (loop) and restart (loop > 1).
-    const handRoot = findSceneObjectByName("GhostHandRoot")
     let playingSamples = 0
     let minZ = 1e9
     let maxZ = -1e9
@@ -30,7 +29,7 @@ export class GH2DemoHoldScenario extends Scenario {
     while ((getTime() - t0) < 9) {
       if (main.getPhase() === "demo") {
         if (ghost.isPlaying()) playingSamples++
-        const p = handRoot.getTransform().getWorldPosition()
+        const p = ghostHandPoint(main)
         minZ = Math.min(minZ, p.z); maxZ = Math.max(maxZ, p.z)
         minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x)
         if (main.isTipGlowing()) tipGlowDuringDemo = true
@@ -66,9 +65,9 @@ export class GH2DemoHoldScenario extends Scenario {
     log(`path dots ${dots}`)
     expect(dots).toBeGreaterThan(3)
     // End pose stays held (no further looping)
-    const p1 = handRoot.getTransform().getWorldPosition()
+    const p1 = ghostHandPoint(main)
     await sleep(1000)
-    const p2 = handRoot.getTransform().getWorldPosition()
+    const p2 = ghostHandPoint(main)
     expect(p1.distance(p2)).toBeLessThan(0.05)
     expect(main.isGhostHolding()).toBe(true)
   }

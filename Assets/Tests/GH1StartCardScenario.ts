@@ -6,7 +6,7 @@ import {expect} from "Leaf.lspkg/Utils/common/Expect"
 import {findSceneObjectByName, sleep} from "Leaf.lspkg/Utils/common/Utils"
 import {findInteractableByName} from "Leaf.lspkg/Interactors/InteractableUtils"
 import {createIKInteractor} from "Leaf.lspkg/Interactors/interactor/ik/visualizer/BitmojiAvatar"
-import {getMain, log, fmt, mustPoll} from "./GhostHandsLeafHelpers"
+import {getMain, log, fmt, mustPoll, ghostHandPoint} from "./GhostHandsLeafHelpers"
 
 @component
 export class GH1StartCardScenario extends Scenario {
@@ -46,7 +46,7 @@ export class GH1StartCardScenario extends Scenario {
     expect(main.getGhostAlpha()).toBeGreaterThan(0.1)
     const handRoot = findSceneObjectByName("GhostHandRoot")
     expect(handRoot.isEnabledInHierarchy).toBe(true)
-    const hp = handRoot.getTransform().getWorldPosition()
+    const hp = ghostHandPoint(main)
     const handDist = Math.sqrt(hp.x * hp.x + hp.z * hp.z)
     log(`ghost hand world ${fmt(hp)} horizontal distance ${handDist.toFixed(2)} cm, alpha ${main.getGhostAlpha().toFixed(3)}`)
     expect(hp.y).toBeLessThan(-45)

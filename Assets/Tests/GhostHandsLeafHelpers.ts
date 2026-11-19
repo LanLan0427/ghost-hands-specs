@@ -33,6 +33,15 @@ export async function mustPoll(pred: () => boolean, timeoutMs: number, what: str
   return ms
 }
 
+/** Where the (right) ghost hand is: its thumb/index pinch point when the rigged IK hands are
+ *  in use, else the legacy GhostHandRoot. */
+export function ghostHandPoint(main: GhostHandsMain): vec3 {
+  if (main.ghost.usesRiggedHands()) return main.ghost.getRightRig().pinchPoint()
+  const handRoot = findSceneObjectByName("GhostHandRoot")
+  if (!handRoot) throw new Error("GhostHandRoot not found")
+  return handRoot.getTransform().getWorldPosition()
+}
+
 export function ropeWorld(local: vec3): vec3 {
   const rope = findSceneObjectByName("Rope")
   if (!rope) throw new Error("Rope not found")
