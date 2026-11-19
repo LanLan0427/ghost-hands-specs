@@ -1,0 +1,47 @@
+- !<AssetImportMetadata/ca6d9f49-30fe-4fdb-b943-f01a1512caf3>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> a6f83638-f7b6-4634-88b4-80b6f946461b
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> a6f83638-f7b6-4634-88b4-80b6f946461b
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> e00a81c4-582f-479b-a5ae-6f4b29593cae
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/e00a81c4-582f-479b-a5ae-6f4b29593cae>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  RunInEditor: false
+  ComponentUid: 662499c4-f463-44af-a70d-b3cb361b10f3
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    stepMarkerRoot: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - stepMarkerRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input SceneObject stepMarkerRoot {"hint":"StepMarkerRoot (falls back to this SceneObject)"}'

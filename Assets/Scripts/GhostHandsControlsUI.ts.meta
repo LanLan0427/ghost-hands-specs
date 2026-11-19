@@ -1,0 +1,68 @@
+- !<AssetImportMetadata/5b7b0b2e-3a41-4202-8b99-150f9e9a115b>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> c9fd6be5-d571-40cf-9d2b-7a1d6fdb6430
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> c9fd6be5-d571-40cf-9d2b-7a1d6fdb6430
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 6d07f067-d6b1-41fd-8910-e1ce24f51a94
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/6d07f067-d6b1-41fd-8910-e1ce24f51a94>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  RunInEditor: false
+  ComponentUid: 26685f3d-8e0a-43c8-a941-56e79c457be9
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    againIcon: false
+    againRoot: false
+    replayIcon: false
+    replayRoot: false
+    slowerIcon: false
+    slowerRoot: false
+    tightenIcon: false
+    tightenRoot: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - replayRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      slowerRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      tightenRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      againRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      replayIcon: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      slowerIcon: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      tightenIcon: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      againIcon: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input SceneObject replayRoot
+    - // @input SceneObject slowerRoot
+    - // @input SceneObject tightenRoot
+    - // @input SceneObject againRoot
+    - // @input Asset.Texture replayIcon
+    - // @input Asset.Texture slowerIcon
+    - // @input Asset.Texture tightenIcon
+    - // @input Asset.Texture againIcon

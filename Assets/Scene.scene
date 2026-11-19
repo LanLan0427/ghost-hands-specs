@@ -5,6 +5,8 @@
     - !<own> 00000000-0000-0065-0000-000000000064
     - !<own> 0005641c-028d-459a-0000-000000014b4d
     - !<own> f5d74682-203a-4970-81ea-9fa7b88c96bb
+    - !<own> 3a4c847e-1c56-4bad-92c8-bb9c6ee79455
+    - !<own> 03ee358b-c793-4f99-a3aa-5cbe24c25749
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - id: 1
@@ -192,6 +194,21 @@
     - !<own> 276368e3-f687-4cc6-947d-24de3a78c9af
   Components:
     []
+- !<SceneObject/03ee358b-c793-4f99-a3aa-5cbe24c25749>
+  PrefabRemaps:
+    []
+  Name: AiPreviewAgent Handler
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 96f2aa6f-3dcf-4b67-9d88-e7ded939d5e7
 - !<SceneObject/0451d993-a1f7-464e-9b69-32c0d9af8ed7>
   PrefabRemaps:
     []
@@ -433,6 +450,36 @@
     - !<own> a6af4948-9adc-4052-ae22-db902dd2764e
   Components:
     []
+- !<SceneObject/150b65c3-2da6-4591-8175-cc8a96a9035c>
+  PrefabRemaps:
+    []
+  Name: StartCardRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: -58.000000, z: -50.000000}
+    Rotation: {x: -50.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 9617250a-9c78-49fd-98e4-a89b9434a2bb
+- !<SceneObject/170a5bb0-e22d-4cbc-93ea-d3a3f44cfb4f>
+  PrefabRemaps:
+    []
+  Name: GhostHands
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 4.000000, y: -58.000000, z: -43.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> a141d9ef-b928-4b42-94f7-0f835d50a4a9
 - !<SceneObject/181c239f-175e-4912-94fc-d37a2599b2d6>
   PrefabRemaps:
     []
@@ -645,6 +692,31 @@
     - !<own> a7da4af4-3d84-4acd-a31e-920a56b4c5c8
   Components:
     []
+- !<ScriptComponent/2e59d92c-12a9-4d09-8b70-0c07ff89e31e>
+  PrefabRemaps:
+    []
+  Name: GhostHandsRopeController
+  Enabled: true
+  ScriptAsset: !<reference> f185adb7-4141-4294-b42a-1acc291d3b71
+  ScriptInputsDefault:
+    ropeColor: true
+    ropeDiameterCm: true
+    tubeSides: true
+    samplesPerSegment: true
+    ringSpacingCm: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      baseMaterial: !<reference.Material> b16bc985-896a-4bc3-bcc3-658909df9b76
+      ropeColor: !<Vec4> {x: 0.953000, y: 0.922000, z: 0.867000, w: 1.000000}
+      ropeDiameterCm: !<float> 1.000000
+      tubeSides: !<float> 12.000000
+      samplesPerSegment: !<float> 3.000000
+      ringSpacingCm: 0.600000
+  ScriptTypes:
+    "":
+      {}
 - !<RenderMeshVisual/335c5f8b-2917-49e8-8af5-220696e9bc09>
   PrefabRemaps:
     []
@@ -731,6 +803,35 @@
     - !<own> 4051028a-c608-4a97-b3d5-1a3912a7c007
   Components:
     []
+- !<SceneObject/3a4c847e-1c56-4bad-92c8-bb9c6ee79455>
+  PrefabRemaps:
+    []
+  Name: LessonRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 89c05926-c91f-409b-9978-f63d96a659cd
+    - !<own> ff3bf534-1f1c-4b77-b1ff-73750a6e8a4f
+    - !<own> 43deb710-04a2-47d4-ac01-a6f83084de9e
+    - !<own> b29595f3-2e4f-4372-ae24-c0510046c323
+    - !<own> 170a5bb0-e22d-4cbc-93ea-d3a3f44cfb4f
+    - !<own> 5333863c-1681-4e2b-b3f6-235bc69f95e0
+    - !<own> d3012397-b29e-4db8-819e-43176fcf1887
+    - !<own> 5315d6fd-b287-4a3d-9ddb-344ecde1eb36
+    - !<own> d2b89775-ed22-40a1-8660-0f3e56ad47f8
+    - !<own> 945b9782-0aa2-4541-93ff-37c0e549b376
+    - !<own> 9e01ade7-5d60-4e87-8804-6bf24ff3dfaf
+    - !<own> 150b65c3-2da6-4591-8175-cc8a96a9035c
+    - !<own> 58575076-3bc4-40d9-8107-e0d23e13aa66
+    - !<own> d21e1b7c-2fd8-4af7-88be-f9a41f57f04d
+  Components:
+    - !<own> a4efae13-41f8-4bff-8da2-5cbf44cc3bc1
+    - !<own> 7f0f8229-5b22-4aea-b1cf-52621c841d48
 - !<SceneObject/3a794764-c758-4d72-9d89-bf3ed978113f>
   PrefabRemaps:
     []
@@ -806,6 +907,21 @@
     []
   Components:
     - !<own> 1f969daa-5809-4500-b314-98d91ccba131
+- !<SceneObject/43deb710-04a2-47d4-ac01-a6f83084de9e>
+  PrefabRemaps:
+    []
+  Name: RopeTip
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 6.000000, y: -64.500000, z: -40.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> f34d25c6-77cc-416b-a4e6-b0f906d1a3c1
 - !<SceneObject/44097eaf-01da-45fb-8973-3bd8172618de>
   PrefabRemaps:
     []
@@ -896,6 +1012,36 @@
     - !<own> 8363e9a6-cd83-4889-abd4-6521e394f244
   Components:
     []
+- !<SceneObject/5315d6fd-b287-4a3d-9ddb-344ecde1eb36>
+  PrefabRemaps:
+    []
+  Name: ReplayButtonRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 20.000000, y: -64.699997, z: -41.000000}
+    Rotation: {x: -90.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
+- !<SceneObject/5333863c-1681-4e2b-b3f6-235bc69f95e0>
+  PrefabRemaps:
+    []
+  Name: GhostRopeTip
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 6.000000, y: -64.500000, z: -40.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<SceneObject/54130007-65c1-48d3-b9df-0866d8112e01>
   PrefabRemaps:
     []
@@ -911,6 +1057,21 @@
     - !<own> 46b79537-a269-46f1-9483-500d7a4170d6
   Components:
     []
+- !<SceneObject/58575076-3bc4-40d9-8107-e0d23e13aa66>
+  PrefabRemaps:
+    []
+  Name: FinishedBadgeRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: -56.000000, z: -47.000000}
+    Rotation: {x: -50.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> a5cc4e0d-507d-4327-bb48-185f92a6511f
 - !<SceneObject/58ef319f-850e-40dd-8295-e6dc36ab4854>
   PrefabRemaps:
     []
@@ -1176,6 +1337,34 @@
     []
   Components:
     - !<own> c8e031d3-a8a1-468a-a419-427f8556de4c
+- !<ScriptComponent/790bbeb4-9809-4818-9cd3-2c81c59bfe27>
+  PrefabRemaps:
+    []
+  Name: GhostHandsPathController
+  Enabled: true
+  ScriptAsset: !<reference> 2e9574d8-b851-4384-a7ba-bb363121ee86
+  ScriptInputsDefault:
+    dotColor: true
+    dotSpacingCm: true
+    dotDiameterCm: true
+    yLiftCm: true
+    maxDots: true
+    pulseSec: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      ropeRoot: !<reference.SceneObject> ff3bf534-1f1c-4b77-b1ff-73750a6e8a4f
+      baseMaterial: !<reference.Material> eb1f69e3-4cdc-46d7-9321-53ab018ffd3c
+      dotColor: !<Vec4> {x: 0.561000, y: 0.827000, z: 1.000000, w: 0.900000}
+      dotSpacingCm: 1.500000
+      dotDiameterCm: 0.600000
+      yLiftCm: 0.250000
+      maxDots: !<float> 24.000000
+      pulseSec: 0.600000
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/7aa85bd8-d423-42cd-b190-473711e94929>
   PrefabRemaps:
     []
@@ -1225,6 +1414,47 @@
     - !<own> 58ef319f-850e-40dd-8295-e6dc36ab4854
   Components:
     []
+- !<ScriptComponent/7f0f8229-5b22-4aea-b1cf-52621c841d48>
+  PrefabRemaps:
+    []
+  Name: GhostHandsMain
+  Enabled: true
+  ScriptAsset: !<reference> c5ea9dba-0be6-41a2-8b55-d8062134fc92
+  ScriptInputsDefault:
+    debugColliders: true
+    debugLogging: true
+    tableTopY: true
+    workDistanceCm: true
+    autoAdvanceDelaySec: true
+    tightenSec: true
+    stepLabels: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      debugColliders: false
+      debugLogging: true
+      startCard: !<MappingBased.AssignableType_1> 9617250a-9c78-49fd-98e4-a89b9434a2bb
+      stepMarker: !<MappingBased.AssignableType_2> ee8881f1-ccef-4cf5-9e7b-2f51eb53e9e7
+      controls: !<MappingBased.AssignableType_3> a4efae13-41f8-4bff-8da2-5cbf44cc3bc1
+      finishedBadge: !<MappingBased.AssignableType_4> a5cc4e0d-507d-4327-bb48-185f92a6511f
+      rope: !<MappingBased.AssignableType_5> 2e59d92c-12a9-4d09-8b70-0c07ff89e31e
+      tip: !<MappingBased.AssignableType_6> f34d25c6-77cc-416b-a4e6-b0f906d1a3c1
+      path: !<MappingBased.AssignableType_7> 790bbeb4-9809-4818-9cd3-2c81c59bfe27
+      ghost: !<MappingBased.AssignableType_8> a141d9ef-b928-4b42-94f7-0f835d50a4a9
+      audio: !<MappingBased.AssignableType_9> 88541a90-a6ef-491c-ac42-2431f8502639
+      tableTopY: !<float> -65.000000
+      workDistanceCm: !<float> 45.000000
+      autoAdvanceDelaySec: 0.500000
+      tightenSec: 1.600000
+      stepLabels: !<string[]>
+        - Make the hole
+        - Up through the hole
+        - Around the tree
+        - Back down the hole
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/7fb3591f-54a2-4aee-b07d-fd10d56538c8>
   PrefabRemaps:
     []
@@ -1330,6 +1560,26 @@
     - !<own> 6c1f70d7-86d0-4972-b203-29780f8798e6
   Components:
     []
+- !<RenderMeshVisual/8696ef1f-9c8c-40ad-b962-5271300dc286>
+  PrefabRemaps:
+    []
+  Name: Render Mesh Visual
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 403081fb-1f76-4797-959b-f843d1809072
+  Mesh: !<reference> 3bdf3c49-6bfc-4b8c-ad7b-1b0b813d2363
+  Skin: !<reference> 00000000-0000-0000-0000-000000000000
+  BlendShapesEnabled: true
+  BlendNormals: false
+  BlendShapes:
+    {}
 - !<ScriptComponent/8729b982-a0ed-49a3-bfd0-400bb465f64f>
   PrefabRemaps:
     []
@@ -1364,6 +1614,37 @@
     - !<own> 1fc7fa3e-6910-4741-b8a7-1b6660a39a9d
   Components:
     - !<own> 28e05826-1521-46fa-a54c-80f2957ec80c
+- !<ScriptComponent/88541a90-a6ef-491c-ac42-2431f8502639>
+  PrefabRemaps:
+    []
+  Name: GhostHandsAudioController
+  Enabled: true
+  ScriptAsset: !<reference> 5d7392ca-2035-4fb1-b217-67b1c655945c
+  ScriptInputsDefault:
+    volume: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      volume: 0.800000
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/89c05926-c91f-409b-9978-f63d96a659cd>
+  PrefabRemaps:
+    []
+  Name: Table (virtual stand-in)
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: -67.000000, z: -60.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 90.000000, y: 4.000000, z: 60.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 8696ef1f-9c8c-40ad-b962-5271300dc286
 - !<SceneObject/8b877074-7eee-4be1-b669-714f8d5a1da3>
   PrefabRemaps:
     []
@@ -1432,6 +1713,21 @@
     - !<own> 8cb3dd13-6ebf-41e6-9a23-94a69dd96f87
   Components:
     []
+- !<SceneObject/945b9782-0aa2-4541-93ff-37c0e549b376>
+  PrefabRemaps:
+    []
+  Name: TightenButtonRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 20.000000, y: -64.699997, z: -45.000000}
+    Rotation: {x: -90.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<SceneObject/9468c53c-f76f-49b7-8a49-b5ec6af1c5a3>
   PrefabRemaps:
     []
@@ -1448,6 +1744,44 @@
     - !<own> e9454e66-5d09-4a8a-bcd7-dea762326a48
   Components:
     []
+- !<ScriptComponent/9617250a-9c78-49fd-98e4-a89b9434a2bb>
+  PrefabRemaps:
+    []
+  Name: GhostHandsStartCardUI
+  Enabled: true
+  ScriptAsset: !<reference> 80b76b37-0ab5-48ac-a210-37342ff47eeb
+  ScriptInputsDefault:
+    titleText: true
+    subtitleText: true
+    promptText: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      startCardRoot: !<reference.SceneObject> 150b65c3-2da6-4591-8175-cc8a96a9035c
+      playIcon: !<reference.Texture> 243d4d50-c921-4b94-aefe-24c64df06efe
+      titleText: Bowline
+      subtitleText: "The rabbit comes out of the hole, around the tree, and back down the hole."
+      promptText: Pinch to begin
+  ScriptTypes:
+    "":
+      {}
+- !<ScriptComponent/96f2aa6f-3dcf-4b67-9d88-e7ded939d5e7>
+  PrefabRemaps:
+    []
+  Name: AgentInspectScript
+  Enabled: true
+  ScriptAsset: !<reference> 0b25079c-f5bf-4c6d-96c4-f43b89dfa213
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      {}
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/988c408a-99dc-47e6-b7c4-efbf4bf8dc3c>
   PrefabRemaps:
     []
@@ -1494,6 +1828,21 @@
   ScriptTypes:
     "":
       {}
+- !<SceneObject/9e01ade7-5d60-4e87-8804-6bf24ff3dfaf>
+  PrefabRemaps:
+    []
+  Name: AgainButtonRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 20.000000, y: -64.699997, z: -45.000000}
+    Rotation: {x: -90.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<SceneObject/9e373d68-993f-4c8f-83a0-6644f1d9fefd>
   PrefabRemaps:
     []
@@ -1524,6 +1873,44 @@
     - !<own> 46ea93d6-d161-4453-9064-6ac11e1d6523
   Components:
     []
+- !<ScriptComponent/a141d9ef-b928-4b42-94f7-0f835d50a4a9>
+  PrefabRemaps:
+    []
+  Name: GhostHandsGhostController
+  Enabled: true
+  ScriptAsset: !<reference> b344cb3f-905e-4383-9ca7-bc6cbbc73e4a
+  ScriptInputsDefault:
+    useIkHandMesh: true
+    ikHandRotationDeg: true
+    handLengthCm: true
+    ghostColor: true
+    baseAlpha: true
+    loopSec: true
+    loopCount: true
+    slowFactor: true
+    fadeSec: true
+    ghostTipDiameterCm: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      ropeRoot: !<reference.SceneObject> ff3bf534-1f1c-4b77-b1ff-73750a6e8a4f
+      ghostTipRoot: !<reference.SceneObject> 5333863c-1681-4e2b-b3f6-235bc69f95e0
+      baseMaterial: !<reference.Material> eb1f69e3-4cdc-46d7-9321-53ab018ffd3c
+      ghostHandMesh: !<reference.RenderMesh> b65568f8-3141-4fc6-b034-96009f5bfd8f
+      useIkHandMesh: true
+      ikHandRotationDeg: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
+      handLengthCm: !<float> 19.000000
+      ghostColor: !<Vec4> {x: 0.561000, y: 0.827000, z: 1.000000, w: 1.000000}
+      baseAlpha: 0.450000
+      loopSec: 2.500000
+      loopCount: !<float> 2.000000
+      slowFactor: 0.500000
+      fadeSec: 0.300000
+      ghostTipDiameterCm: !<float> 1.000000
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/a4b1ce71-4840-4493-bc52-58f3c13933e1>
   PrefabRemaps:
     []
@@ -1558,6 +1945,47 @@
     - !<own> b93dfa60-41bd-4999-ac0f-4b2f1df2bdaf
   Components:
     []
+- !<ScriptComponent/a4efae13-41f8-4bff-8da2-5cbf44cc3bc1>
+  PrefabRemaps:
+    []
+  Name: GhostHandsControlsUI
+  Enabled: true
+  ScriptAsset: !<reference> c9fd6be5-d571-40cf-9d2b-7a1d6fdb6430
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      replayRoot: !<reference.SceneObject> 5315d6fd-b287-4a3d-9ddb-344ecde1eb36
+      slowerRoot: !<reference.SceneObject> d2b89775-ed22-40a1-8660-0f3e56ad47f8
+      tightenRoot: !<reference.SceneObject> 945b9782-0aa2-4541-93ff-37c0e549b376
+      againRoot: !<reference.SceneObject> 9e01ade7-5d60-4e87-8804-6bf24ff3dfaf
+      replayIcon: !<reference.Texture> 2fd5c056-18f9-4f70-9d9d-2e95e3169cdc
+      slowerIcon: !<reference.Texture> 79adf854-0456-454b-bd57-c79cb9b0d9d8
+      tightenIcon: !<reference.Texture> 09adc94e-d7ad-4b48-8e84-e6c0a2b4830f
+      againIcon: !<reference.Texture> 7ddcae7b-8d38-44c4-819e-0d93fc2715bf
+  ScriptTypes:
+    "":
+      {}
+- !<ScriptComponent/a5cc4e0d-507d-4327-bb48-185f92a6511f>
+  PrefabRemaps:
+    []
+  Name: GhostHandsFinishedBadgeUI
+  Enabled: true
+  ScriptAsset: !<reference> 87f4a07e-fa7d-4d36-90dd-86618c11eec6
+  ScriptInputsDefault:
+    doneText: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      badgeRoot: !<reference.SceneObject> 58575076-3bc4-40d9-8107-e0d23e13aa66
+      checkIcon: !<reference.Texture> 442839be-b9b7-43d3-8755-9b1da591c376
+      doneText: Bowline done!
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/a6305e2f-5379-4729-800a-d5ecae615edc>
   PrefabRemaps:
     []
@@ -1678,6 +2106,21 @@
     - !<own> 3de2c7ea-1525-465a-9056-68565a4014a7
   Components:
     []
+- !<SceneObject/b29595f3-2e4f-4372-ae24-c0510046c323>
+  PrefabRemaps:
+    []
+  Name: DottedPath
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: -64.300003, z: -45.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 790bbeb4-9809-4818-9cd3-2c81c59bfe27
 - !<SceneObject/b463be13-dddb-4b36-a3dd-c344bd3d8ef5>
   PrefabRemaps:
     []
@@ -1986,6 +2429,51 @@
     - !<own> bb9036be-541f-49e7-9554-c297d354da21
   Components:
     []
+- !<SceneObject/d21e1b7c-2fd8-4af7-88be-f9a41f57f04d>
+  PrefabRemaps:
+    []
+  Name: AudioRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: -60.000000, z: -45.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 88541a90-a6ef-491c-ac42-2431f8502639
+- !<SceneObject/d2b89775-ed22-40a1-8660-0f3e56ad47f8>
+  PrefabRemaps:
+    []
+  Name: SlowerButtonRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 20.000000, y: -64.699997, z: -49.000000}
+    Rotation: {x: -90.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
+- !<SceneObject/d3012397-b29e-4db8-819e-43176fcf1887>
+  PrefabRemaps:
+    []
+  Name: StepMarkerRoot
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: -64.900002, z: -53.000000}
+    Rotation: {x: -90.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> ee8881f1-ccef-4cf5-9e7b-2f51eb53e9e7
 - !<ScriptComponent/d3e2fbc5-8795-4913-9af6-c8626f8e6d9c>
   PrefabRemaps:
     []
@@ -2254,6 +2742,22 @@
     Fingers_length: 0.000000
     Thumb_inflate: 0.000000
     Thumb_length: 0.000000
+- !<ScriptComponent/ee8881f1-ccef-4cf5-9e7b-2f51eb53e9e7>
+  PrefabRemaps:
+    []
+  Name: GhostHandsStepMarkerUI
+  Enabled: true
+  ScriptAsset: !<reference> a6f83638-f7b6-4634-88b4-80b6f946461b
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      stepMarkerRoot: !<reference.SceneObject> d3012397-b29e-4db8-819e-43176fcf1887
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/f0394c5d-4c44-4c65-a77c-e1c7e05ca905>
   PrefabRemaps:
     []
@@ -2269,6 +2773,40 @@
     []
   Components:
     []
+- !<ScriptComponent/f34d25c6-77cc-416b-a4e6-b0f906d1a3c1>
+  PrefabRemaps:
+    []
+  Name: GhostHandsTipController
+  Enabled: true
+  ScriptAsset: !<reference> 67c3eff6-cd46-45dc-adca-3307ebc974a0
+  ScriptInputsDefault:
+    offPathThresholdCm: true
+    snapProgress: true
+    tipGlowColor: true
+    warningColor: true
+    successColor: true
+    slideBackSec: true
+    colliderRadiusCm: true
+    glowDiameterCm: true
+    forwardWindow: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      ropeRoot: !<reference.SceneObject> ff3bf534-1f1c-4b77-b1ff-73750a6e8a4f
+      baseMaterial: !<reference.Material> eb1f69e3-4cdc-46d7-9321-53ab018ffd3c
+      offPathThresholdCm: !<float> 3.000000
+      snapProgress: 0.970000
+      tipGlowColor: !<Vec4> {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      warningColor: !<Vec4> {x: 1.000000, y: 0.604000, z: 0.235000, w: 1.000000}
+      successColor: !<Vec4> {x: 0.357000, y: 0.890000, z: 0.490000, w: 1.000000}
+      slideBackSec: 0.300000
+      colliderRadiusCm: !<float> 2.000000
+      glowDiameterCm: 1.600000
+      forwardWindow: 0.250000
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/f36287fd-ed56-442d-ba20-78f9ef6f3502>
   PrefabRemaps:
     []
@@ -2394,3 +2932,18 @@
     - !<own> bb75b5ea-8baf-4d8d-bcf8-49bd79873881
   Components:
     []
+- !<SceneObject/ff3bf534-1f1c-4b77-b1ff-73750a6e8a4f>
+  PrefabRemaps:
+    []
+  Name: Rope
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: -64.500000, z: -45.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 2e59d92c-12a9-4d09-8b70-0c07ff89e31e

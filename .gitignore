@@ -61,3 +61,7 @@ tmp/
 Thumbs.db
 desktop.ini
 node_modules/
+
+# Asset-generation scratch scripts (CLAD build)
+tempAssetGen/
+.virtual-scene.json

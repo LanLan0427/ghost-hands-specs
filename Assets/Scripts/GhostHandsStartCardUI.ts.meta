@@ -1,0 +1,59 @@
+- !<AssetImportMetadata/b35f75b1-299b-454c-bfd3-ea3d1846a27e>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 80b76b37-0ab5-48ac-a210-37342ff47eeb
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 80b76b37-0ab5-48ac-a210-37342ff47eeb
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> b8e1dc5d-b7c0-413d-8bd5-581c36198253
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/b8e1dc5d-b7c0-413d-8bd5-581c36198253>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  RunInEditor: false
+  ComponentUid: 80285679-8086-422e-8abf-eb3310df26a6
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    playIcon: false
+    promptText: false
+    startCardRoot: false
+    subtitleText: false
+    titleText: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - startCardRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      playIcon: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      titleText: Bowline
+      subtitleText: "The rabbit comes out of the hole, around the tree, and back down the hole."
+      promptText: Pinch to begin
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input SceneObject startCardRoot {"hint":"StartCardRoot (falls back to this SceneObject)"}'
+    - // @input Asset.Texture playIcon
+    - '// @input string titleText = "Bowline"'
+    - '// @input string subtitleText = "The rabbit comes out of the hole, around the tree, and back down the hole."'
+    - '// @input string promptText = "Pinch to begin"'

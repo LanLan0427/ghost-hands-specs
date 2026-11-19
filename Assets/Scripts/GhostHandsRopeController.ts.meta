@@ -1,0 +1,62 @@
+- !<AssetImportMetadata/06128e62-e847-4b53-87b2-f9d2fa0594c0>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> f185adb7-4141-4294-b42a-1acc291d3b71
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> f185adb7-4141-4294-b42a-1acc291d3b71
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> d049062e-50e3-4f7c-9152-4ba177b65567
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/d049062e-50e3-4f7c-9152-4ba177b65567>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  RunInEditor: false
+  ComponentUid: 306bbac6-763a-473e-878e-8e2446fb3436
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    baseMaterial: false
+    ringSpacingCm: false
+    ropeColor: false
+    ropeDiameterCm: false
+    samplesPerSegment: false
+    tubeSides: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - baseMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      ropeColor: !<Vec4> {x: 0.953000, y: 0.922000, z: 0.867000, w: 1.000000}
+      ropeDiameterCm: !<float> 1.000000
+      tubeSides: !<float> 12.000000
+      samplesPerSegment: !<float> 3.000000
+      ringSpacingCm: 0.600000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input Asset.Material baseMaterial {"hint":"Lit PBR material asset; cloned at runtime and tinted with ropeColor"}'
+    - '// @input vec4 ropeColor = {0.953,0.922,0.867,1} {"widget":"color"}'
+    - '// @input float ropeDiameterCm = 1 {"hint":"Rope tube diameter in cm"}'
+    - '// @input float tubeSides = 12 {"hint":"Vertices around the tube"}'
+    - '// @input float samplesPerSegment = 3 {"hint":"Catmull-Rom samples per control segment"}'
+    - '// @input float ringSpacingCm = 0.6 {"hint":"Ring spacing (cm) after smoothing"}'

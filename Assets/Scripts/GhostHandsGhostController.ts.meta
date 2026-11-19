@@ -1,0 +1,86 @@
+- !<AssetImportMetadata/74e28df3-c45c-4dba-8501-e2370c782840>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> b344cb3f-905e-4383-9ca7-bc6cbbc73e4a
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> b344cb3f-905e-4383-9ca7-bc6cbbc73e4a
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 0fd186c5-7f72-49b1-b8b8-c5210e06081a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/0fd186c5-7f72-49b1-b8b8-c5210e06081a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  RunInEditor: false
+  ComponentUid: f6110579-6808-4a30-9ee1-130e7a04d196
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    baseAlpha: false
+    baseMaterial: false
+    fadeSec: false
+    ghostColor: false
+    ghostHandMesh: false
+    ghostTipDiameterCm: false
+    ghostTipRoot: false
+    handLengthCm: false
+    ikHandRotationDeg: false
+    loopCount: false
+    loopSec: false
+    ropeRoot: false
+    slowFactor: false
+    useIkHandMesh: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - ropeRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      ghostTipRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      baseMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      ghostHandMesh: !<reference.RenderMesh> 00000000-0000-0000-0000-000000000000
+      useIkHandMesh: true
+      ikHandRotationDeg: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
+      handLengthCm: !<float> 19.000000
+      ghostColor: !<Vec4> {x: 0.561000, y: 0.827000, z: 1.000000, w: 1.000000}
+      baseAlpha: 0.450000
+      loopSec: 2.500000
+      loopCount: !<float> 2.000000
+      slowFactor: 0.500000
+      fadeSec: 0.300000
+      ghostTipDiameterCm: !<float> 1.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input SceneObject ropeRoot
+    - // @input SceneObject ghostTipRoot
+    - // @input Asset.Material baseMaterial
+    - // @input Asset.RenderMesh ghostHandMesh
+    - // @input bool useIkHandMesh = true
+    - "// @input vec3 ikHandRotationDeg = {0,0,0}"
+    - // @input float handLengthCm = 19
+    - '// @input vec4 ghostColor = {0.561,0.827,1,1} {"widget":"color"}'
+    - // @input float baseAlpha = 0.45
+    - // @input float loopSec = 2.5
+    - // @input float loopCount = 2
+    - // @input float slowFactor = 0.5
+    - // @input float fadeSec = 0.3
+    - // @input float ghostTipDiameterCm = 1

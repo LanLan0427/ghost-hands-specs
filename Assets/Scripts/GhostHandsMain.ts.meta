@@ -1,0 +1,96 @@
+- !<AssetImportMetadata/b0987b7a-feb9-4427-9fea-ec985bc43e57>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> c5ea9dba-0be6-41a2-8b55-d8062134fc92
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> c5ea9dba-0be6-41a2-8b55-d8062134fc92
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 448976eb-6d0b-4e92-ab70-a747f4323226
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/448976eb-6d0b-4e92-ab70-a747f4323226>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  RunInEditor: false
+  ComponentUid: d06c5c4c-bf90-469e-90d7-ab694dd04924
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    audio: false
+    autoAdvanceDelaySec: false
+    controls: false
+    debugColliders: false
+    debugLogging: false
+    finishedBadge: false
+    ghost: false
+    path: false
+    rope: false
+    startCard: false
+    stepLabels: false
+    stepMarker: false
+    tableTopY: false
+    tightenSec: false
+    tip: false
+    workDistanceCm: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - debugColliders: false
+      debugLogging: true
+      startCard: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      stepMarker: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      controls: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      finishedBadge: !<MappingBased.AssignableType_4> 00000000-0000-0000-0000-000000000000
+      rope: !<MappingBased.AssignableType_5> 00000000-0000-0000-0000-000000000000
+      tip: !<MappingBased.AssignableType_6> 00000000-0000-0000-0000-000000000000
+      path: !<MappingBased.AssignableType_7> 00000000-0000-0000-0000-000000000000
+      ghost: !<MappingBased.AssignableType_8> 00000000-0000-0000-0000-000000000000
+      audio: !<MappingBased.AssignableType_9> 00000000-0000-0000-0000-000000000000
+      tableTopY: !<float> -65.000000
+      workDistanceCm: !<float> 45.000000
+      autoAdvanceDelaySec: 0.500000
+      tightenSec: 1.600000
+      stepLabels: !<string[]>
+        - Make the hole
+        - Up through the hole
+        - Around the tree
+        - Back down the hole
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input bool debugColliders
+    - '// @input bool debugLogging = true {"hint":"Print state transitions to the log"}'
+    - // @input AssignableType_1 startCard
+    - // @input AssignableType_2 stepMarker
+    - // @input AssignableType_3 controls
+    - // @input AssignableType_4 finishedBadge
+    - // @input AssignableType_5 rope
+    - // @input AssignableType_6 tip
+    - // @input AssignableType_7 path
+    - // @input AssignableType_8 ghost
+    - // @input AssignableType_9 audio
+    - '// @input float tableTopY = -65 {"hint":"World Y of the table top (cm); rope should rest 0.5 cm above it"}'
+    - '// @input float workDistanceCm = 45 {"hint":"Expected horizontal distance from the user to the rope (cm)"}'
+    - "// @input float autoAdvanceDelaySec = 0.5 {\"hint\":\"Delay after a step snaps before the next step's demo starts (s)\"}"
+    - '// @input float tightenSec = 1.6 {"hint":"Duration of the Tighten animation (s)"}'
+    - '// @input string[] stepLabels = {"Make the hole","Up through the hole","Around the tree","Back down the hole"} {"hint":"One label per step (rhyme defaults)"}'

@@ -1,0 +1,77 @@
+- !<AssetImportMetadata/c4ad3552-d419-4f64-93e1-b786d340ae28>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 67c3eff6-cd46-45dc-adca-3307ebc974a0
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 67c3eff6-cd46-45dc-adca-3307ebc974a0
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> e97dac3b-c232-4847-8406-22e35abecad2
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/e97dac3b-c232-4847-8406-22e35abecad2>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  RunInEditor: false
+  ComponentUid: 41c55449-db94-4dcd-b4f6-37fc604139cb
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    baseMaterial: false
+    colliderRadiusCm: false
+    forwardWindow: false
+    glowDiameterCm: false
+    offPathThresholdCm: false
+    ropeRoot: false
+    slideBackSec: false
+    snapProgress: false
+    successColor: false
+    tipGlowColor: false
+    warningColor: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - ropeRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      baseMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      offPathThresholdCm: !<float> 3.000000
+      snapProgress: 0.970000
+      tipGlowColor: !<Vec4> {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      warningColor: !<Vec4> {x: 1.000000, y: 0.604000, z: 0.235000, w: 1.000000}
+      successColor: !<Vec4> {x: 0.357000, y: 0.890000, z: 0.490000, w: 1.000000}
+      slideBackSec: 0.300000
+      colliderRadiusCm: !<float> 2.000000
+      glowDiameterCm: 1.600000
+      forwardWindow: 0.250000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input SceneObject ropeRoot
+    - // @input Asset.Material baseMaterial
+    - // @input float offPathThresholdCm = 3
+    - // @input float snapProgress = 0.97
+    - '// @input vec4 tipGlowColor = {1,1,1,1} {"widget":"color"}'
+    - '// @input vec4 warningColor = {1,0.604,0.235,1} {"widget":"color"}'
+    - '// @input vec4 successColor = {0.357,0.89,0.49,1} {"widget":"color"}'
+    - // @input float slideBackSec = 0.3
+    - // @input float colliderRadiusCm = 2
+    - // @input float glowDiameterCm = 1.6
+    - // @input float forwardWindow = 0.25
