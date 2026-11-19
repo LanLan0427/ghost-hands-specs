@@ -1,0 +1,63 @@
+# Shipped by Lens Studio
+
+# The lines below are automatically generated and updated by Lens Studio.
+# Please do not modify them manually, as changes will be overwritten each time!
+# If you want to make changes to this file, please put them either above or below this section.
+
+Cache/**
+PluginsUserPreferences/**
+Support/**
+BackUp/**
+Workspaces/**
+.vscode/**
+/jsconfig.json
+/tsconfig.json
+.DS_Store
+/spk_debug_key.pem
+*.lock
+
+# Shipped by Lens Studio
+# BEGIN Lens Studio managed Agents-Docs block
+.mcp.json
+.cursor/mcp.json
+.vscode/mcp.json
+.codex/config.toml
+.claude/settings.local.json
+ls-live-instance.json
+ls-live-instance.json.tmp
+# END Lens Studio managed Agents-Docs block
+
+# --- Added for GhostHands (Learn AR with SPECS) ---
+# Lens Studio generated / per-machine folders (each also ships its own "*" .gitignore)
+Cache/
+Support/
+Workspaces/
+PluginsUserPreferences/
+.clad/
+# Lens Studio project lock files
+*.esproj.*.lock
+*.lock
+!skills-lock.json
+# Build / export output and temp files
+Build/
+build/
+Export/
+dist/
+out/
+Temp/
+tmp/
+*.tmp
+*.lens
+*.log
+# Secrets: never commit tokens, keys or MCP connection files
+.env
+.env.*
+*.pem
+*.key
+**/mcp.json
+.claude/settings.local.json
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+node_modules/
