@@ -18,7 +18,7 @@ export type ControlName = "replay" | "slower" | "tighten" | "again"
 const BUTTON_W = 12
 const BUTTON_H = 6
 const ICON_SIZE_CM = 2.2
-const DIM_OPACITY = 0.45
+const DIM_OPACITY = 0.7
 const ORDER: ControlName[] = ["replay", "slower", "tighten", "again"]
 
 interface ControlSlot {
@@ -227,7 +227,7 @@ export class GhostHandsControlsUI extends BaseScriptComponent {
       leadingIcon: icon,
       iconSizeCM: icon ? ICON_SIZE_CM : undefined
     })
-    content.textSize = roleSize("Button", 80)
+    content.textSize = roleSize("Button", 120)
     slot.content = content
     slot.button = btn
 

@@ -22,7 +22,7 @@ const PANEL_H = 4
 const DOT_SIZE = 1.2
 const DOT_GAP = 1.8 // 3 cm center pitch
 const DOT_COUNT = 4
-const LABEL_H = 1.8
+const LABEL_H = 2.4
 const VIEW_DISTANCE_CM = 80
 
 const COLOR_TEXT = new vec4(1, 1, 1, 1)
@@ -114,8 +114,8 @@ export class GhostHandsStepMarkerUI extends BaseScriptComponent {
       })
     }
 
-    const t = dynamicText(column, this.label, "Subheadline", PANEL_W, LABEL_H, COLOR_TEXT)
-    applyTextRole(t, "Subheadline", VIEW_DISTANCE_CM)
+    const t = dynamicText(column, this.label, "Headline2", PANEL_W, LABEL_H, COLOR_TEXT)
+    applyTextRole(t, "Headline2", VIEW_DISTANCE_CM)
     this.labelText = t
 
     this.built = true

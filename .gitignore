@@ -65,3 +65,6 @@ node_modules/
 # Asset-generation scratch scripts (CLAD build)
 tempAssetGen/
 .virtual-scene.json
+
+# Added by Lens Studio (LEAF plugin)
+leaf_plugin_settings.json
