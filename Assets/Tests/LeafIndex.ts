@@ -9,6 +9,7 @@ import {GH6RealDragStepsScenario} from "./GH6RealDragStepsScenario"
 import {GH7ReplaySlowerScenario} from "./GH7ReplaySlowerScenario"
 import {GH8FinishedKnotScenario} from "./GH8FinishedKnotScenario"
 import {GH9GhostHandsPoseScenario} from "./GH9GhostHandsPoseScenario"
+import {GH10VisualHierarchyScenario} from "./GH10VisualHierarchyScenario"
 
 @component
 export class LeafIndex extends BaseScriptComponent {
@@ -23,5 +24,6 @@ export class LeafIndex extends BaseScriptComponent {
     {id: "gh7-replay-slower", typename: GH7ReplaySlowerScenario.getTypeName()},
     {id: "gh8-finished-knot", typename: GH8FinishedKnotScenario.getTypeName()},
     {id: "gh9-ghost-hands-pose", typename: GH9GhostHandsPoseScenario.getTypeName()},
+    {id: "gh10-visual-hierarchy", typename: GH10VisualHierarchyScenario.getTypeName()},
   ]
 }

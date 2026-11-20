@@ -17,13 +17,16 @@ import {
   tintRoundedRect
 } from "./UIKitHelpers"
 
-const PANEL_W = 18
-const PANEL_H = 4
+const PANEL_W = 22
+const PANEL_H = 4.6
 const DOT_SIZE = 1.2
 const DOT_GAP = 1.8 // 3 cm center pitch
 const DOT_COUNT = 4
-const LABEL_H = 2.4
+const LABEL_H = 2.8
 const VIEW_DISTANCE_CM = 80
+/** One step up from Headline2 so the step label reads at a glance on the table. */
+export const LABEL_ROLE = "Headline1" as const
+export const LABEL_VIEW_DISTANCE_CM = 80
 
 const COLOR_TEXT = new vec4(1, 1, 1, 1)
 const COLOR_PENDING = new vec4(0.82, 0.85, 0.9, 0.95)
@@ -72,6 +75,11 @@ export class GhostHandsStepMarkerUI extends BaseScriptComponent {
     this.applyLabel()
   }
 
+  /** Live label text size and the label string (for tests). */
+  public getLabelTextSize(): number {
+    return this.labelText && !isNull(this.labelText) ? this.labelText.size : 0
+  }
+
   public getDotStates(): string[] {
     return this.states.slice()
   }
@@ -114,8 +122,8 @@ export class GhostHandsStepMarkerUI extends BaseScriptComponent {
       })
     }
 
-    const t = dynamicText(column, this.label, "Headline2", PANEL_W, LABEL_H, COLOR_TEXT)
-    applyTextRole(t, "Headline2", VIEW_DISTANCE_CM)
+    const t = dynamicText(column, this.label, LABEL_ROLE, PANEL_W, LABEL_H, COLOR_TEXT)
+    applyTextRole(t, LABEL_ROLE, VIEW_DISTANCE_CM)
     this.labelText = t
 
     this.built = true

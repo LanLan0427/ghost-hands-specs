@@ -47,6 +47,41 @@ export interface HandPlacement {
 const CLEAR_FINGERS = ["mid", "ring", "pinky"];
 const CLEAR_STEP_DEG = 6;
 const CLEAR_MAX_ITERS = 14;
+const FINGERTIP_JOINTS = ["thumb-3_end", "index-3_end", "mid-3_end", "ring-3_end", "pinky-3_end"];
+
+/** UV sphere mesh (position / normal / texture0), centred on the origin. */
+export function buildSphereMesh(radius: number, lat: number = 8, lon: number = 12): RenderMesh {
+  const mb = new MeshBuilder([
+    { name: "position", components: 3 },
+    { name: "normal", components: 3, normalized: true },
+    { name: "texture0", components: 2 },
+  ]);
+  mb.topology = MeshTopology.Triangles;
+  mb.indexType = MeshIndexType.UInt16;
+  const verts: number[] = [];
+  const idx: number[] = [];
+  for (let i = 0; i <= lat; i++) {
+    const th = (i / lat) * Math.PI;
+    for (let j = 0; j <= lon; j++) {
+      const ph = (j / lon) * Math.PI * 2;
+      const nx = Math.sin(th) * Math.cos(ph);
+      const ny = Math.cos(th);
+      const nz = Math.sin(th) * Math.sin(ph);
+      verts.push(nx * radius, ny * radius, nz * radius, nx, ny, nz, j / lon, i / lat);
+    }
+  }
+  for (let i = 0; i < lat; i++) {
+    for (let j = 0; j < lon; j++) {
+      const a = i * (lon + 1) + j;
+      const b = a + lon + 1;
+      idx.push(a, b, a + 1, b, b + 1, a + 1);
+    }
+  }
+  mb.appendVerticesInterleaved(verts);
+  mb.appendIndices(idx);
+  mb.updateMesh();
+  return mb.getMesh();
+}
 
 export class GhostHandRig {
   readonly root: SceneObject;
@@ -55,6 +90,7 @@ export class GhostHandRig {
   private rest: { [name: string]: quat } = {};
   private srcRot: quat = quat.quatIdentity();
   private valid = false;
+  private tipGlows: SceneObject[] = [];
 
   constructor(root: SceneObject, isLeft: boolean) {
     this.root = root;
@@ -120,6 +156,32 @@ export class GhostHandRig {
       for (let i = 0; i < o.getChildrenCount(); i++) visit(o.getChild(i));
     };
     visit(this.root);
+  }
+
+  /** Small glowing dots on all five fingertips, so with an almost invisible hand fill the
+   *  outline + fingertips still read as a hand (and the pinching tips stand out). */
+  addFingertipGlows(mat: Material, radiusCm: number): void {
+    if (!this.valid || this.tipGlows.length > 0) return;
+    const mesh = buildSphereMesh(radiusCm);
+    for (const f of FINGERTIP_JOINTS) {
+      const j = this.joints[f];
+      if (!j) continue;
+      const so = global.scene.createSceneObject("GhostFingertip_" + f);
+      so.setParent(j);
+      const t = so.getTransform();
+      t.setLocalPosition(vec3.zero());
+      t.setWorldScale(vec3.one());
+      const v = so.createComponent("Component.RenderMeshVisual") as RenderMeshVisual;
+      v.mesh = mesh;
+      v.mainMaterial = mat;
+      v.setRenderOrder(999);
+      this.tipGlows.push(so);
+    }
+  }
+
+  /** World positions of the fingertip glow dots (empty if none). */
+  fingertipGlowPositions(): vec3[] {
+    return this.tipGlows.filter((s) => s.isEnabledInHierarchy).map((s) => s.getTransform().getWorldPosition());
   }
 
   setVisible(on: boolean): void {

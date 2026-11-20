@@ -29,7 +29,7 @@ import {
 
 /** Where along the rope (arc progress from the standing end) the left hand grips during Tighten. */
 const TIGHTEN_LEFT_GRIP_T = 0.1;
-import { GhostHandRig } from "./GhostHandsRigPose";
+import { GhostHandRig, buildSphereMesh } from "./GhostHandsRigPose";
 
 const DEG = Math.PI / 180;
 const PINCH_CURL = 0.85;
@@ -46,6 +46,22 @@ export const FINGER_CLEARANCE_CM = 0.6;
 export const LEFT_HOLD_LOCAL = new vec3(-3.2, 0.1, 3.1);
 /** GHOST_KEYS lift at or below which the right pinch sits on the rope (drag 0.5 / hold 0.8). */
 const PINCH_ON_ROPE_LIFT_CM = 0.8;
+/** Visual hierarchy: the hands are only a faint glowing outline + fingertips, so the loop and the
+ *  ghost rope under them stay visible; the ghost rope tip is the brightest ghost element. */
+export const HAND_BODY_OPACITY = 0.03;
+export const HAND_RIM_COLOR = new vec3(0.5, 0.82, 1.0);
+export const HAND_RIM_STRENGTH = 1.6;
+/** Peak opacity of the hand outline in round 1 (round 2 halves it via the relative alpha). */
+export const HAND_PEAK_ALPHA = 0.55;
+export const FINGERTIP_GLOW_RADIUS_CM = 0.45;
+export const FINGERTIP_ALPHA = 0.75;
+export const GHOST_TIP_COLOR = new vec3(0.9, 0.98, 1.0);
+export const GHOST_TIP_ALPHA = 1.0;
+export const GHOST_TIP_GLOW_RADIUS_CM = 0.85;
+/** Perceived brightness of a blended colour: Rec.709 luminance x opacity. */
+export function glowBrightness(rgb: vec3, alpha: number): number {
+  return (0.2126 * rgb.x + 0.7152 * rgb.y + 0.0722 * rgb.z) * alpha;
+}
 const VERT_LAYOUT = [
   { name: "position", components: 3 },
   { name: "normal", components: 3, normalized: true },
@@ -87,6 +103,8 @@ export class GhostHandsGhostController extends BaseScriptComponent {
   private handMat: Material = null;
   private rimMat: Material = null;
   private tipMat: Material = null;
+  private fingertipMat: Material = null;
+  private tipGlowObj: SceneObject = null;
   /** Rigged hands: one-sided + depth write so only the outer skin shows (no inner-face blob). */
   private rigMat: Material = null;
   private visualRoot: SceneObject = null;
@@ -156,6 +174,11 @@ export class GhostHandsGhostController extends BaseScriptComponent {
       this.tubeBuilder = new MeshBuilder(VERT_LAYOUT);
       this.tubeBuilder.topology = MeshTopology.Triangles;
       this.tubeBuilder.indexType = MeshIndexType.UInt16;
+      this.tipGlowObj = global.scene.createSceneObject("GhostTipGlow");
+      this.tipGlowObj.setParent(this.tubeObj);
+      const gv = this.tipGlowObj.createComponent("Component.RenderMeshVisual") as RenderMeshVisual;
+      gv.mesh = buildSphereMesh(GHOST_TIP_GLOW_RADIUS_CM);
+      gv.mainMaterial = this.tipMat;
       this.tubeObj.enabled = false;
     }
     this.applyVisibility();
@@ -230,6 +253,21 @@ export class GhostHandsGhostController extends BaseScriptComponent {
   usesRiggedHands(): boolean { return this.rigMode; }
   isLeftHandShown(): boolean { return this.rigMode && this.visible && this.leftShown; }
   getRightRig(): GhostHandRig { return this.rightRig; }
+  /** Live material values that set how bright each ghost element reads (for tests/tuning). */
+  getVisualHierarchy(): { handBodyOpacity: number; handOutlineBrightness: number; fingertipBrightness: number; tipBrightness: number; tipGlowShown: boolean } {
+    const rp = this.rigMat ? (this.rigMat.getPass(this.rigMat.getPassCount() - 1) as any) : null;
+    const hb = rp ? rp.baseColor as vec4 : new vec4(0, 0, 0, 0);
+    const rim = rp && rp.rimColor ? rp.rimColor as vec3 : HAND_RIM_COLOR;
+    const fc = this.fingertipMat ? (this.fingertipMat.mainPass as any).baseColor as vec4 : new vec4(0, 0, 0, 0);
+    const tc = this.tipMat ? (this.tipMat.mainPass as any).baseColor as vec4 : new vec4(0, 0, 0, 0);
+    return {
+      handBodyOpacity: rp ? (rp.bodyOpacity as number) * hb.w : 0,
+      handOutlineBrightness: glowBrightness(rim, hb.w),
+      fingertipBrightness: glowBrightness(new vec3(fc.x, fc.y, fc.z), fc.w),
+      tipBrightness: glowBrightness(new vec3(tc.x, tc.y, tc.z), tc.w),
+      tipGlowShown: !!this.tipGlowObj && this.tipGlowObj.isEnabledInHierarchy,
+    };
+  }
   getLeftRig(): GhostHandRig { return this.leftRig; }
 
   playTighten(durationSec: number): void {
@@ -377,13 +415,25 @@ export class GhostHandsGhostController extends BaseScriptComponent {
       rp.twoSided = false;
       rp.depthWrite = true;
     }
+    if (this.rigMaterial && this.rigMaterial.getPassCount() >= 2) {
+      for (let i = 0; i < this.rigMat.getPassCount(); i++) {
+        const p = this.rigMat.getPass(i) as any;
+        p.bodyOpacity = HAND_BODY_OPACITY;
+        p.rimColor = HAND_RIM_COLOR;
+        p.rimStrength = HAND_RIM_STRENGTH;
+      }
+    }
     right.setMaterial(this.rigMat);
+    // Fingertip dots draw just before the hands, so the hands' depth pre-pass can't hide them.
+    this.fingertipMat = this.makeMat();
+    right.addFingertipGlows(this.fingertipMat, FINGERTIP_GLOW_RADIUS_CM);
     if (this.leftHandRig) {
       const left = new GhostHandRig(this.leftHandRig, true);
       if (left.isValid()) {
         this.leftRig = left;
         this.leftHandRig.setParent(this.handRoot);
         left.setMaterial(this.rigMat);
+        left.addFingertipGlows(this.fingertipMat, FINGERTIP_GLOW_RADIUS_CM);
         left.setVisible(false);
       }
     }
@@ -439,9 +489,13 @@ export class GhostHandsGhostController extends BaseScriptComponent {
     this.setColor(this.handMat, new vec4(c.x, c.y, c.z, this.alpha));
     // The rig shader has its own semi-transparent body + glowing rim, so its alpha is relative to
     // the round-1 base: 1 = full ghost look, 0.5 = round 2 half-transparent, fading to 0.
-    this.setColor(this.rigMat, new vec4(c.x, c.y, c.z, clamp01(this.alpha / Math.max(0.01, this.baseAlpha))));
+    const rel = clamp01(this.alpha / Math.max(0.01, this.baseAlpha));
+    this.setColor(this.rigMat, new vec4(c.x, c.y, c.z, rel * HAND_PEAK_ALPHA));
+    this.setColor(this.fingertipMat, new vec4(HAND_RIM_COLOR.x, HAND_RIM_COLOR.y, HAND_RIM_COLOR.z, rel * FINGERTIP_ALPHA));
     this.setColor(this.rimMat, new vec4(c.x, c.y, c.z, this.alpha * 0.35));
-    this.setColor(this.tipMat, new vec4(c.x, c.y, c.z, this.alpha * 0.8));
+    // The ghost rope tip is the brightest ghost element: the eye follows the rope, not the hand.
+    const tc = GHOST_TIP_COLOR;
+    this.setColor(this.tipMat, new vec4(tc.x, tc.y, tc.z, rel * GHOST_TIP_ALPHA));
   }
 
   private setColor(m: Material, col: vec4): void {
@@ -504,6 +558,7 @@ export class GhostHandsGhostController extends BaseScriptComponent {
     }
     mb.appendVerticesInterleaved(verts);
     mb.appendIndices(idx);
+    if (this.tipGlowObj) this.tipGlowObj.getTransform().setLocalPosition(pts[pts.length - 1]);
     if (mb.isValid()) {
       mb.updateMesh();
       if (!this.tubeAssigned) {

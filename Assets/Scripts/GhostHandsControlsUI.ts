@@ -4,7 +4,7 @@
 // reports user intent through events. Holds no domain state.
 //
 // Four authored roots (flat on the table, local +Z up). Under each root ONE child
-// host "<Root>Host" (Canvas 12x6) holds one UIKit Button 12 x 6 cm with a companion
+// host "<Root>Host" (Canvas BUTTON_W x BUTTON_H) holds one UIKit Button 9 x 4.5 cm with a companion
 // ElementContent label + leading icon. Hidden via host.enabled — never the root,
 // never `inactive`, never scale.
 
@@ -15,9 +15,9 @@ import {Button, ElementContent, UI_THEME, addButtonLabel, fitElementCollider, ob
 export type ControlsMode = "hidden" | "steps" | "tighten" | "again"
 export type ControlName = "replay" | "slower" | "tighten" | "again"
 
-const BUTTON_W = 12
-const BUTTON_H = 6
-const ICON_SIZE_CM = 2.2
+export const BUTTON_W = 9
+export const BUTTON_H = 4.5
+const ICON_SIZE_CM = 1.8
 const DIM_OPACITY = 0.7
 const ORDER: ControlName[] = ["replay", "slower", "tighten", "again"]
 
