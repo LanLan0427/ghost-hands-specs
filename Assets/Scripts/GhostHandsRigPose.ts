@@ -47,7 +47,8 @@ export interface HandPlacement {
 const CLEAR_FINGERS = ["mid", "ring", "pinky"];
 const CLEAR_STEP_DEG = 6;
 const CLEAR_MAX_ITERS = 14;
-const FINGERTIP_JOINTS = ["thumb-3_end", "index-3_end", "mid-3_end", "ring-3_end", "pinky-3_end"];
+/** Only the pinching fingertips glow: the curled fingers stay as outline only. */
+const FINGERTIP_JOINTS = ["thumb-3_end", "index-3_end"];
 
 /** UV sphere mesh (position / normal / texture0), centred on the origin. */
 export function buildSphereMesh(radius: number, lat: number = 8, lon: number = 12): RenderMesh {
@@ -158,7 +159,7 @@ export class GhostHandRig {
     visit(this.root);
   }
 
-  /** Small glowing dots on all five fingertips, so with an almost invisible hand fill the
+  /** Small glowing dots on the thumb and index tips, so with an almost invisible hand fill the
    *  outline + fingertips still read as a hand (and the pinching tips stand out). */
   addFingertipGlows(mat: Material, radiusCm: number): void {
     if (!this.valid || this.tipGlows.length > 0) return;

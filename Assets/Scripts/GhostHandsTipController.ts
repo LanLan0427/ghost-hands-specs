@@ -284,6 +284,11 @@ export class GhostHandsTipController extends BaseScriptComponent {
     if (this.haloMat) this.haloMat.mainPass.baseColor = new vec4(c.r, c.g, c.b, 0.3);
   }
 
+  /** Live colour of the user's glowing tip core (for tests). */
+  getCoreColor(): vec4 {
+    return this.coreMat ? this.coreMat.mainPass.baseColor : new vec4(0, 0, 0, 0);
+  }
+
   private colorFor(s: TipColorState): vec4 {
     if (s === "warning") return this.warningColor;
     if (s === "success") return this.successColor;

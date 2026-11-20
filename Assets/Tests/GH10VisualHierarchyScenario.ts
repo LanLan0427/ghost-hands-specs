@@ -1,7 +1,8 @@
 // Visual hierarchy + layout from the user's eyes:
 //  - the ghost hands are almost invisible inside (faint fill) and read as a glowing outline +
-//    glowing fingertips, so the loop and ghost rope under them stay visible;
-//  - the ghost rope tip is brighter than any part of the hands (the eye follows the rope);
+//    glowing thumb + index tips only, so the loop and ghost rope under them stay visible;
+//  - the ghost rope tip is brighter than any part of the hands (the eye follows the rope) and
+//    tinted light blue so it reads as a ghost, while the user's own rope tip glows white;
 //  - every control button lies completely inside the view while the user looks at the loop,
 //    about 8 cm right of it, and clear of the rope tip where step 1 starts;
 //  - the step label is one type size bigger (Headline1 instead of Headline2).
@@ -60,8 +61,16 @@ export class GH10VisualHierarchyScenario extends Scenario {
     let nearPinch = 0
     for (const p of tips) if (p.distance(pinch) < 1.5) nearPinch++
     log(`right fingertip glows: ${tips.length}, ${nearPinch} at the pinch point ${fmt(pinch)}`)
-    expect(tips.length).toBe(5)
-    expect(nearPinch).toBeGreaterThan(1) // thumb + index tips glow on the pinch
+    expect(tips.length).toBe(2) // only the pinching thumb + index tips glow
+    expect(nearPinch).toBe(2) // ...and both sit on the pinch
+
+    // Ghost tip = light blue, the user's own tip = white: easy to tell apart.
+    const gc = ghost.getVisualHierarchy().tipColor
+    const uc = main.tip.getCoreColor()
+    log(`ghost rope tip colour ${fmt(gc)}, user's rope tip colour (${uc.x.toFixed(2)}, ${uc.y.toFixed(2)}, ${uc.z.toFixed(2)})`)
+    expect(gc.z - gc.x).toBeGreaterThan(0.2) // clearly blue-tinted
+    expect(gc.z).toBeGreaterThan(0.9) // ...but light, not dark
+    expect(Math.min(uc.x, uc.y, uc.z)).toBeGreaterThan(0.95) // user's tip stays white
 
     // During a replay (hand moving) the tip still out-shines the hands.
     await pinchButton("ReplayButtonRootButton")
@@ -81,6 +90,13 @@ export class GH10VisualHierarchyScenario extends Scenario {
     let loopRightX = -999
     for (const p of ROPE_LOOP_SHAPE.slice(4, 10)) loopRightX = Math.max(loopRightX, ropeWorld(p).x)
     const tailStart = ropeWorld(stepPath(1)[0])
+    // The preview camera you record with must sit at that same eye and look at the loop, so the
+    // recording matches what these checks measure.
+    const camLook = camObj.getTransform().forward.uniformScale(-1) // a camera looks along -Z
+    const lookErrDeg = Math.acos(Math.max(-1, Math.min(1, camLook.dot(loopCenter.sub(liveEye).normalize())))) * 180 / Math.PI
+    log(`live preview camera: ${liveEye.distance(vec3.zero()).toFixed(2)} cm from the design eye, ${lookErrDeg.toFixed(1)} deg off the loop centre`)
+    expect(liveEye.distance(vec3.zero())).toBeLessThan(1)
+    expect(lookErrDeg).toBeLessThan(5)
     log(`camera fov ${(cam.fov * 180 / Math.PI).toFixed(1)} deg, aspect ${cam.aspect.toFixed(3)}, live preview eye ${fmt(liveEye)}; loop centre ${fmt(loopCenter)}, loop right edge x ${loopRightX.toFixed(1)}`)
     for (const rootName of BUTTON_ROOTS) {
       const btn = findSceneObjectByName(rootName + "Button")

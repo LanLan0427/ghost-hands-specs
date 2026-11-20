@@ -55,7 +55,8 @@ export const HAND_RIM_STRENGTH = 1.6;
 export const HAND_PEAK_ALPHA = 0.55;
 export const FINGERTIP_GLOW_RADIUS_CM = 0.45;
 export const FINGERTIP_ALPHA = 0.75;
-export const GHOST_TIP_COLOR = new vec3(0.9, 0.98, 1.0);
+/** Light blue (reads as a ghost) while the user's own rope tip glows white. */
+export const GHOST_TIP_COLOR = new vec3(0.7, 0.9, 1.0);
 export const GHOST_TIP_ALPHA = 1.0;
 export const GHOST_TIP_GLOW_RADIUS_CM = 0.85;
 /** Perceived brightness of a blended colour: Rec.709 luminance x opacity. */
@@ -254,7 +255,7 @@ export class GhostHandsGhostController extends BaseScriptComponent {
   isLeftHandShown(): boolean { return this.rigMode && this.visible && this.leftShown; }
   getRightRig(): GhostHandRig { return this.rightRig; }
   /** Live material values that set how bright each ghost element reads (for tests/tuning). */
-  getVisualHierarchy(): { handBodyOpacity: number; handOutlineBrightness: number; fingertipBrightness: number; tipBrightness: number; tipGlowShown: boolean } {
+  getVisualHierarchy(): { handBodyOpacity: number; handOutlineBrightness: number; fingertipBrightness: number; tipBrightness: number; tipColor: vec3; tipGlowShown: boolean } {
     const rp = this.rigMat ? (this.rigMat.getPass(this.rigMat.getPassCount() - 1) as any) : null;
     const hb = rp ? rp.baseColor as vec4 : new vec4(0, 0, 0, 0);
     const rim = rp && rp.rimColor ? rp.rimColor as vec3 : HAND_RIM_COLOR;
@@ -265,6 +266,7 @@ export class GhostHandsGhostController extends BaseScriptComponent {
       handOutlineBrightness: glowBrightness(rim, hb.w),
       fingertipBrightness: glowBrightness(new vec3(fc.x, fc.y, fc.z), fc.w),
       tipBrightness: glowBrightness(new vec3(tc.x, tc.y, tc.z), tc.w),
+      tipColor: new vec3(tc.x, tc.y, tc.z),
       tipGlowShown: !!this.tipGlowObj && this.tipGlowObj.isEnabledInHierarchy,
     };
   }
