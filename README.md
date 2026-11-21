@@ -1,5 +1,7 @@
 # Ghost Hands: learn the bowline with hands that are where yours are
 
+English | [繁體中文](README.zh-TW.md)
+
 Ghost Hands is a Lens for SPECS that teaches the bowline knot one small step at a time.
 Light-blue ghost hands appear right above your rope, at your own hand position and from your
 own point of view, and show the next move in a 2–3 second loop. Then they wait. Your rope tip
